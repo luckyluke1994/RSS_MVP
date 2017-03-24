@@ -14,6 +14,7 @@ import com.example.maidaidien.rssmvp.R;
  */
 
 public class AllNewsFragment extends Fragment {
+    public static final String TITLE = "All News";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
