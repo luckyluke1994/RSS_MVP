@@ -1,9 +1,9 @@
 package com.example.maidaidien.rssmvp.service;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.maidaidien.rssmvp.model.RSSItem;
+import com.example.maidaidien.rssmvp.presenter.OnLoadFinish;
 
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
@@ -25,6 +25,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 
 public class DownloadTask extends AsyncTask<String, Void, List<RSSItem>> {
+    private OnLoadFinish mOnLoadFinish;
+
+    public void setOnLoadFinish(OnLoadFinish onLoadFinish) {
+        this.mOnLoadFinish = onLoadFinish;
+    }
 
     @Override
     protected List<RSSItem> doInBackground(String... params) {
@@ -98,14 +103,8 @@ public class DownloadTask extends AsyncTask<String, Void, List<RSSItem>> {
 
     @Override
     protected void onPostExecute(List<RSSItem> rssItems) {
-        for (RSSItem item : rssItems) {
-            Log.d("---------------------------", "---------------------------");
-            Log.d("---------------------------", item.getTitle());
-            Log.d("---------------------------", item.getImage());
-            Log.d("---------------------------", item.getLink());
-            Log.d("---------------------------", item.getDate());
-            Log.d("---------------------------", item.getDescription());
-            Log.d("---------------------------", "---------------------------");
+        if (mOnLoadFinish != null) {
+            mOnLoadFinish.onLoadFinish(rssItems);
         }
     }
 }
