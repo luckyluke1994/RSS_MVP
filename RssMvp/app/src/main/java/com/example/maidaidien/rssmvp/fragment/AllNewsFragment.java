@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import com.example.maidaidien.rssmvp.R;
 import com.example.maidaidien.rssmvp.adapter.NewsAdapter;
+import com.example.maidaidien.rssmvp.model.NewsContract;
 import com.example.maidaidien.rssmvp.model.RSSItem;
 import com.example.maidaidien.rssmvp.presenter.OnLoadFinish;
 import com.example.maidaidien.rssmvp.service.DownloadTask;
@@ -31,7 +32,8 @@ public class AllNewsFragment extends Fragment implements OnLoadFinish {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DownloadTask downloadTask = new DownloadTask();
+        DownloadTask downloadTask = new DownloadTask(getActivity());
+        downloadTask.setUri(NewsContract.AllNewsEntry.CONTENT_URI);
         downloadTask.setOnLoadFinish(this);
         downloadTask.execute(ALL_NEWS_LINK);
     }
