@@ -1,7 +1,12 @@
 package com.example.maidaidien.rssmvp.service;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
 
+import com.example.maidaidien.rssmvp.model.NewsContract;
+import com.example.maidaidien.rssmvp.model.NewsProvider;
 import com.example.maidaidien.rssmvp.model.RSSItem;
 import com.example.maidaidien.rssmvp.presenter.OnLoadFinish;
 
@@ -16,6 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -26,17 +32,27 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class DownloadTask extends AsyncTask<String, Void, List<RSSItem>> {
     private OnLoadFinish mOnLoadFinish;
+    private Context mContext;
+    private Uri mUri;
 
     public void setOnLoadFinish(OnLoadFinish onLoadFinish) {
         this.mOnLoadFinish = onLoadFinish;
     }
 
-    @Override
-    protected List<RSSItem> doInBackground(String... params) {
-        return parseXml(params[0]);
+    public void setUri(Uri uri) {
+        this.mUri = uri;
     }
 
-    private List<RSSItem> parseXml(String link) {
+    public DownloadTask(Context context) {
+        this.mContext = context;
+    }
+
+    @Override
+    protected List<RSSItem> doInBackground(String... params) {
+        return parseXml(params[0], mUri);
+    }
+
+    private List<RSSItem> parseXml(String link, Uri uri) {
         URL url = null;
         try {
             url = new URL(link);
@@ -58,6 +74,7 @@ public class DownloadTask extends AsyncTask<String, Void, List<RSSItem>> {
 
             NodeList nl = doc.getElementsByTagName("item");
             int length = nl.getLength();
+            Vector<ContentValues> cVVector = new Vector<>(length);
             List<RSSItem> newsList = new ArrayList<>();
 
             for (int i = 0; i < length; i++) {
@@ -67,6 +84,8 @@ public class DownloadTask extends AsyncTask<String, Void, List<RSSItem>> {
 
                 NodeList nChild = currentNode.getChildNodes();
                 int clength = nChild.getLength();
+                // Get the required elements from each item
+                ContentValues newsValues = new ContentValues();
 
                 for (int j = 1; j < clength; j += 2) {
                     Node thisNode = nChild.item(j);
@@ -91,8 +110,31 @@ public class DownloadTask extends AsyncTask<String, Void, List<RSSItem>> {
                         }
                     }
                 }// end for loop 2
+
+                switch (NewsProvider.sUriMatcher.match(uri)) {
+                    case NewsProvider.ALLNEWS:
+                        newsValues.put(NewsContract.AllNewsEntry.COLUMN_TITLE, _item.getTitle());
+                        newsValues.put(NewsContract.AllNewsEntry.COLUMN_DESCRIPTION, _item.getDescription());
+                        newsValues.put(NewsContract.AllNewsEntry.COLUMN_DATE, _item.getDate());
+                        newsValues.put(NewsContract.AllNewsEntry.COLUMN_IMAGE, _item.getImage());
+                        newsValues.put(NewsContract.AllNewsEntry.COLUMN_LINK, _item.getLink());
+                        break;
+                    default:
+                        throw new UnsupportedOperationException("Unknown uri: " + mUri);
+                }
+                cVVector.add(newsValues);
                 // add news article into list
                 newsList.add(_item);
+            }
+
+            int inserted = 0;
+            // delete old data
+            this.mContext.getContentResolver().delete(mUri, null, null);
+            // add to database
+            if (cVVector.size() > 0) {
+                ContentValues[] cvArray = new ContentValues[cVVector.size()];
+                cVVector.toArray(cvArray);
+                this.mContext.getContentResolver().bulkInsert(uri, cvArray);
             }
             return newsList;
         } catch (Exception ex) {
