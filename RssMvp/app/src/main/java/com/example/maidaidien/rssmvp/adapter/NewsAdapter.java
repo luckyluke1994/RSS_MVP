@@ -2,6 +2,7 @@ package com.example.maidaidien.rssmvp.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,8 @@ public class NewsAdapter extends ArrayAdapter<RSSItem> {
         ImageView thumbImage = (ImageView) listItemView.findViewById(R.id.thumbnail_image);
 
         // dum data
-        titleTextView.setText(currentItem.getTitle());
+        //noinspection deprecation
+        titleTextView.setText(Html.fromHtml(currentItem.getTitle()));
         descriptionTextView.setText(currentItem.getDescription());
         dateTextView.setText(currentItem.getDate());
         Picasso.with(getContext())

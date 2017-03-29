@@ -17,6 +17,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <provider
+            android:authorities="com.example.android.news.luckyluke"
+            android:name=".model.NewsProvider" />
     </application>
 
 </manifest>
