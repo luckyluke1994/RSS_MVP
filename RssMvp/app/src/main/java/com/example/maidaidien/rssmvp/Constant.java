@@ -7,4 +7,5 @@ package com.example.maidaidien.rssmvp;
 public class Constant {
     public static final String LINK_EXTRA = "link";
     public static final String URI_EXTRA = "uri";
+    public static final int AllNewsLoaderId = 0;
 }
