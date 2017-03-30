@@ -19,8 +19,6 @@ import org.xml.sax.InputSource;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -58,7 +56,6 @@ public class NewsService extends IntentService {
             NodeList nl = doc.getElementsByTagName("item");
             int length = nl.getLength();
             Vector<ContentValues> cVVector = new Vector<>(length);
-            List<RSSItem> newsList = new ArrayList<>();
 
             for (int i = 0; i < length; i++) {
                 // each article of news we need to get title, description, image, date
@@ -106,8 +103,6 @@ public class NewsService extends IntentService {
                         throw new UnsupportedOperationException("Unknown uri: " + uri);
                 }
                 cVVector.add(newsValues);
-                // add news article into list
-                newsList.add(_item);
             }
 
             int inserted = 0;
