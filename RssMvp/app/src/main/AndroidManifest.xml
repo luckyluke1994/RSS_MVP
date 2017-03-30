@@ -21,6 +21,7 @@
         <provider
             android:name=".model.NewsProvider"
             android:authorities="com.example.android.news.luckyluke"/>
+        <service android:name=".service.NewsService"/>
     </application>
 
 </manifest>

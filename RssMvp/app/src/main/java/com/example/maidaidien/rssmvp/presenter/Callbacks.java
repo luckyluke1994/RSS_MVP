@@ -14,7 +14,7 @@ public class Callbacks {
     }
 
     public interface Action {
-        void onLoadFinish(Cursor data);
         Context getAppContext();
+        void onLoadFinish(Cursor data);
     }
 }

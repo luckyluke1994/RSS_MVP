@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 
 import com.example.maidaidien.rssmvp.Constant;
 import com.example.maidaidien.rssmvp.presenter.Callbacks;
@@ -34,13 +33,6 @@ public class ModelHelper implements LoaderManager.LoaderCallbacks<Cursor> {
             NewsContract.AllNewsEntry.COLUMN_LINK
     };
 
-    public static final int COL_ID = 0;
-    public static final int COL_TITLE = 1;
-    public static final int COL_DESCRIPTION = 2;
-    public static final int COL_DATE = 3;
-    public static final int COL_IMAGE = 4;
-    public static final int COL_LINK = 5;
-
     public ModelHelper(String url, Uri uri, LoaderManager loaderManager, int loaderId) {
         this.mUrl = url;
         this.mUri = uri;
@@ -58,7 +50,6 @@ public class ModelHelper implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public void refresh() {
         loadDataFromServer();
-        //loadDataFromDatabase();
     }
 
     private void loadDataFromServer() {
@@ -93,10 +84,6 @@ public class ModelHelper implements LoaderManager.LoaderCallbacks<Cursor> {
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mOnLoadFinish.onLoadFinish(data);
-        data.moveToFirst();
-        while (data.moveToNext()) {
-            Log.d("--------------->", data.getString(COL_TITLE));
-        }
     }
 
     @Override
