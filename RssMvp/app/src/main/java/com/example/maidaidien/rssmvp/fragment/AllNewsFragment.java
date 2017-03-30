@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -29,18 +32,17 @@ public class AllNewsFragment extends Fragment implements Callbacks.NewsView {
 
     private NewsAdapter mNewsAdapter;
     private ListView mNewsListView;
+    private NewsPresenter mNewsPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Utils.isNetworkAvailable(getActivity())) {
-            NewsPresenter newsPresenter = new NewsPresenter(this,
-                    new ModelHelper(ALL_NEWS_LINK,
-                            NewsContract.AllNewsEntry.CONTENT_URI,
-                            getLoaderManager(),
-                            Constant.AllNewsLoaderId));
-            newsPresenter.refresh();
-        }
+        setHasOptionsMenu(true);
+        mNewsPresenter = new NewsPresenter(this,
+                new ModelHelper(ALL_NEWS_LINK,
+                        NewsContract.AllNewsEntry.CONTENT_URI,
+                        getLoaderManager(),
+                        Constant.AllNewsLoaderId));
     }
 
     @Nullable
@@ -51,6 +53,28 @@ public class AllNewsFragment extends Fragment implements Callbacks.NewsView {
         mNewsAdapter = new NewsAdapter(getActivity(), null, 0, NewsContract.AllNewsEntry.CONTENT_URI);
         mNewsListView.setAdapter(mNewsAdapter);
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                refresh();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void refresh() {
+        if (Utils.isNetworkAvailable(getActivity())) {
+            mNewsPresenter.refresh();
+        }
     }
 
     @Override
