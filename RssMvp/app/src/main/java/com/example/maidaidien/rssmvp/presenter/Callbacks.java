@@ -1,13 +1,20 @@
 package com.example.maidaidien.rssmvp.presenter;
 
 import android.content.Context;
+import android.database.Cursor;
 
 /**
  * Created by mai.dai.dien on 29/03/2017.
  */
 
 public class Callbacks {
-    public interface View {
-        public Context getContext();
+    public interface NewsView {
+        Context getAppContext();
+        void onLoadFinish(Cursor data);
+    }
+
+    public interface Action {
+        void onLoadFinish(Cursor data);
+        Context getAppContext();
     }
 }
