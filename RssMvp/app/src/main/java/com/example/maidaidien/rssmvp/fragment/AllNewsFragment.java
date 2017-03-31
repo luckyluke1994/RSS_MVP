@@ -1,5 +1,6 @@
 package com.example.maidaidien.rssmvp.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class AllNewsFragment extends Fragment implements Callbacks.NewsView {
     private NewsAdapter mNewsAdapter;
     private ListView mNewsListView;
     private NewsPresenter mNewsPresenter;
+    private ProgressDialog mProgressDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class AllNewsFragment extends Fragment implements Callbacks.NewsView {
                         NewsContract.AllNewsEntry.CONTENT_URI,
                         getLoaderManager(),
                         Constant.AllNewsLoaderId));
+        mProgressDialog = Utils.getProgressDialog(getActivity(), R.style.TransparentDialogTheme);
     }
 
     @Nullable
@@ -73,6 +76,7 @@ public class AllNewsFragment extends Fragment implements Callbacks.NewsView {
 
     private void refresh() {
         if (Utils.isNetworkAvailable(getActivity())) {
+            mProgressDialog.show();
             mNewsPresenter.refresh();
         }
     }
@@ -85,5 +89,6 @@ public class AllNewsFragment extends Fragment implements Callbacks.NewsView {
     @Override
     public void onLoadFinish(Cursor data) {
         mNewsAdapter.swapCursor(data);
+        mProgressDialog.dismiss();
     }
 }
