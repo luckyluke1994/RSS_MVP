@@ -73,17 +73,10 @@ public class FootballNewsFragment extends Fragment implements Callbacks.NewsView
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                refresh();
+                mNewsPresenter.refresh();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void refresh() {
-        if (Utils.isNetworkAvailable(getActivity())) {
-            mProgressDialog.show();
-            mNewsPresenter.refresh();
         }
     }
 
@@ -95,6 +88,15 @@ public class FootballNewsFragment extends Fragment implements Callbacks.NewsView
     @Override
     public void onLoadFinish(Cursor data) {
         mNewsAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void showLoading() {
+        mProgressDialog.show();
+    }
+
+    @Override
+    public void dismissLoading() {
         mProgressDialog.dismiss();
     }
 }

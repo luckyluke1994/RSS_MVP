@@ -3,6 +3,7 @@ package com.example.maidaidien.rssmvp.presenter;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.example.maidaidien.rssmvp.Utils;
 import com.example.maidaidien.rssmvp.model.ModelHelper;
 
 /**
@@ -19,13 +20,18 @@ public class NewsPresenter implements Callbacks.Action {
         this.mModelHelper.setOnLoadFinish(this);
     }
 
+    @Override
     public void refresh() {
-        mModelHelper.start();
-        mModelHelper.refresh();
+        if (Utils.isNetworkAvailable(getAppContext())) {
+            mNewsView.showLoading();
+            mModelHelper.start();
+            mModelHelper.refresh();
+        }
     }
 
     @Override
     public void onLoadFinish(Cursor data) {
+        mNewsView.dismissLoading();
         mNewsView.onLoadFinish(data);
     }
 
