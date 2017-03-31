@@ -33,6 +33,15 @@ public class ModelHelper implements LoaderManager.LoaderCallbacks<Cursor> {
             NewsContract.AllNewsEntry.COLUMN_LINK
     };
 
+    private static final String[] FOOTBALL_NEWS_COLUMN = {
+            NewsContract.FootballNewsEntry.TABLE_NAME + "." + NewsContract.FootballNewsEntry._ID,
+            NewsContract.FootballNewsEntry.COLUMN_TITLE,
+            NewsContract.FootballNewsEntry.COLUMN_DESCRIPTION,
+            NewsContract.FootballNewsEntry.COLUMN_DATE,
+            NewsContract.FootballNewsEntry.COLUMN_IMAGE,
+            NewsContract.FootballNewsEntry.COLUMN_LINK
+    };
+
     public ModelHelper(String url, Uri uri, LoaderManager loaderManager, int loaderId) {
         this.mUrl = url;
         this.mUri = uri;
@@ -73,6 +82,13 @@ public class ModelHelper implements LoaderManager.LoaderCallbacks<Cursor> {
                 return new CursorLoader(getContext(),
                         NewsContract.AllNewsEntry.CONTENT_URI,
                         ALLNEWS_COLUMN,
+                        null,
+                        null,
+                        null);
+            case Constant.FootballNewsLoaderId:
+                return new CursorLoader(getContext(),
+                        NewsContract.FootballNewsEntry.CONTENT_URI,
+                        FOOTBALL_NEWS_COLUMN,
                         null,
                         null,
                         null);

@@ -99,6 +99,13 @@ public class NewsService extends IntentService {
                         newsValues.put(NewsContract.AllNewsEntry.COLUMN_IMAGE, _item.getImage());
                         newsValues.put(NewsContract.AllNewsEntry.COLUMN_LINK, _item.getLink());
                         break;
+                    case NewsProvider.FOOTBALLNEWS:
+                        newsValues.put(NewsContract.FootballNewsEntry.COLUMN_TITLE, _item.getTitle());
+                        newsValues.put(NewsContract.FootballNewsEntry.COLUMN_DESCRIPTION, _item.getDescription());
+                        newsValues.put(NewsContract.FootballNewsEntry.COLUMN_DATE, _item.getDate());
+                        newsValues.put(NewsContract.FootballNewsEntry.COLUMN_IMAGE, _item.getImage());
+                        newsValues.put(NewsContract.FootballNewsEntry.COLUMN_LINK, _item.getLink());
+                        break;
                     default:
                         throw new UnsupportedOperationException("Unknown uri: " + uri);
                 }
