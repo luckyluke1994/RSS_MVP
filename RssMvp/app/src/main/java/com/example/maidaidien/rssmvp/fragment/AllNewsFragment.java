@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.maidaidien.rssmvp.Constant;
@@ -55,6 +56,11 @@ public class AllNewsFragment extends Fragment implements Callbacks.NewsView {
         mNewsListView = (ListView) view.findViewById(R.id.news_listview);
         mNewsAdapter = new NewsAdapter(getActivity(), null, 0, NewsContract.AllNewsEntry.CONTENT_URI);
         mNewsListView.setAdapter(mNewsAdapter);
+        mNewsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            }
+        });
         return view;
     }
 
