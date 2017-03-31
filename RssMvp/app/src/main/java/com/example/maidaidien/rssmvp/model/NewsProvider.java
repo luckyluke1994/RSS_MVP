@@ -18,12 +18,14 @@ public class NewsProvider extends ContentProvider {
     private NewsDbHelper mOpenHelper;
 
     public static final int ALLNEWS = 100;
+    public static final int FOOTBALLNEWS = 200;
 
     static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = NewsContract.CONTENT_AUTHORITY;
 
         matcher.addURI(authority, NewsContract.PATH_ALLNEWS, ALLNEWS);
+        matcher.addURI(authority, NewsContract.PATH_FOOTBALLNEWS, FOOTBALLNEWS);
 
         return matcher;
     }
@@ -56,6 +58,17 @@ public class NewsProvider extends ContentProvider {
                         sortOrder
                 );
                 break;
+            case FOOTBALLNEWS:
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        NewsContract.FootballNewsEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -79,6 +92,14 @@ public class NewsProvider extends ContentProvider {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
                 break;
+            case FOOTBALLNEWS:
+                _id = db.insert(NewsContract.FootballNewsEntry.TABLE_NAME, null, values);
+                if (_id > 0) {
+                    returnUri = NewsContract.FootballNewsEntry.buildFootballNewsUri(_id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -95,6 +116,9 @@ public class NewsProvider extends ContentProvider {
         switch (match) {
             case ALLNEWS:
                 rowsDeleted = db.delete(NewsContract.AllNewsEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case FOOTBALLNEWS:
+                rowsDeleted = db.delete(NewsContract.FootballNewsEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -114,6 +138,9 @@ public class NewsProvider extends ContentProvider {
         switch (match) {
             case ALLNEWS:
                 rowsUpdated = db.update(NewsContract.AllNewsEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            case FOOTBALLNEWS:
+                rowsUpdated = db.update(NewsContract.FootballNewsEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -137,6 +164,21 @@ public class NewsProvider extends ContentProvider {
                 try {
                     for (ContentValues value : values) {
                         _id = db.insert(NewsContract.AllNewsEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCound++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCound;
+            case FOOTBALLNEWS:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value: values) {
+                        _id = db.insert(NewsContract.FootballNewsEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCound++;
                         }

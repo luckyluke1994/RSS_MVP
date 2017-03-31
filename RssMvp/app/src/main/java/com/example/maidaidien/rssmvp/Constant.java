@@ -8,6 +8,7 @@ public class Constant {
     public static final String LINK_EXTRA = "link";
     public static final String URI_EXTRA = "uri";
     public static final int AllNewsLoaderId = 0;
+    public static final int FootballNewsLoaderId = 1;
 
     // index when query
     public static final int COL_ID = 0;

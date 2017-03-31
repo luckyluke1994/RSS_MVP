@@ -26,12 +26,22 @@ public class NewsDbHelper extends SQLiteOpenHelper {
                 NewsContract.AllNewsEntry.COLUMN_IMAGE + " TEXT NOT NULL, " +
                 NewsContract.AllNewsEntry.COLUMN_LINK + " TEXT NOT NULL );";
 
+        final String SQL_CREATE_FOOTBALLNEWS_TABLE = "CREATE TABLE " + NewsContract.FootballNewsEntry.TABLE_NAME + " (" +
+                NewsContract.FootballNewsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                NewsContract.FootballNewsEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
+                NewsContract.FootballNewsEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
+                NewsContract.FootballNewsEntry.COLUMN_DATE + " TEXT NOT NULL, " +
+                NewsContract.FootballNewsEntry.COLUMN_IMAGE + " TEXT NOT NULL, " +
+                NewsContract.FootballNewsEntry.COLUMN_LINK + " TEXT NOT NULL );";
+
         db.execSQL(SQL_CREATE_ALLNEWS_TABLE);
+        db.execSQL(SQL_CREATE_FOOTBALLNEWS_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + NewsContract.AllNewsEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + NewsContract.FootballNewsEntry.TABLE_NAME);
         onCreate(db);
     }
 }
