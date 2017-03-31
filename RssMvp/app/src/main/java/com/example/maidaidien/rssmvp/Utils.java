@@ -1,5 +1,6 @@
 package com.example.maidaidien.rssmvp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 
@@ -16,5 +17,11 @@ public class Utils {
             return false;
         }
         return true;
+    }
+
+    public static ProgressDialog getProgressDialog(Context context, int theme) {
+        ProgressDialog progressDialog = new ProgressDialog(context, theme);
+        progressDialog.setCanceledOnTouchOutside(false);
+        return progressDialog;
     }
 }
