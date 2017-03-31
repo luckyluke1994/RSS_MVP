@@ -11,10 +11,13 @@ public class Callbacks {
     public interface NewsView {
         Context getAppContext();
         void onLoadFinish(Cursor data);
+        void showLoading();
+        void dismissLoading();
     }
 
     public interface Action {
         Context getAppContext();
         void onLoadFinish(Cursor data);
+        void refresh();
     }
 }
