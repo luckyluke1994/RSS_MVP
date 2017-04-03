@@ -100,7 +100,11 @@ public class FootballNewsFragment extends Fragment implements Callbacks.NewsView
 
     @Override
     public void openNewsDetailsUi(RSSItem newsItem) {
-        startActivity(new Intent(getActivity(), DetailsActivity.class));
+        Intent intent = new Intent(getActivity(), DetailsActivity.class);
+        Bundle args = new Bundle();
+        args.putSerializable(Constant.NEWS_EXTRA, newsItem);
+        intent.putExtras(args);
+        startActivity(intent);
     }
 
     @Override
