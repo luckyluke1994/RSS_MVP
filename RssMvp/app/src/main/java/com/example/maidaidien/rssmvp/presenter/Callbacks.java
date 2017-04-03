@@ -23,6 +23,7 @@ public class Callbacks {
         void onLoadFinish(Cursor data);
         void refresh();
         void openNewsDetails(RSSItem newsItem);
+        void stopService();
     }
 
     public interface OnNewsItemClicked {
