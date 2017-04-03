@@ -71,6 +71,7 @@ public class AllNewsFragment extends Fragment implements Callbacks.NewsView, Cal
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
+                mNewsPresenter.stopService();
                 mNewsPresenter.refresh();
                 return true;
             default:

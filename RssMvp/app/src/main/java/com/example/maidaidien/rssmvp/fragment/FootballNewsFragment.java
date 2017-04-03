@@ -71,6 +71,7 @@ public class FootballNewsFragment extends Fragment implements Callbacks.NewsView
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
+                mNewsPresenter.stopService();
                 mNewsPresenter.refresh();
                 return true;
             default:

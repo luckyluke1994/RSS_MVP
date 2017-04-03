@@ -36,9 +36,14 @@ public class NewsPresenter implements Callbacks.Action {
     }
 
     @Override
+    public void stopService() {
+        Utils.stopService(getAppContext());
+    }
+
+    @Override
     public void onLoadFinish(Cursor data) {
-        mNewsView.dismissLoading();
         mNewsView.onLoadFinish(data);
+        mNewsView.dismissLoading();
     }
 
     @Override
