@@ -1,10 +1,12 @@
 package com.example.maidaidien.rssmvp.model;
 
+import java.io.Serializable;
+
 /**
  * Created by mai.dai.dien on 27/03/2017.
  */
 
-public class RSSItem {
+public class RSSItem implements Serializable {
     private int mId;
     private String mTitle;
     private String mDescription;
