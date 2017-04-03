@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.example.maidaidien.rssmvp.Constant;
 import com.example.maidaidien.rssmvp.R;
+import com.example.maidaidien.rssmvp.model.RSSItem;
+import com.example.maidaidien.rssmvp.presenter.Callbacks;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -21,10 +23,15 @@ import com.squareup.picasso.Picasso;
 
 public class NewsAdapter extends CursorAdapter {
     private Uri mUri;
+    private Callbacks.OnNewsItemClicked mOnNewsItemClicked;
 
     public NewsAdapter(Context context, Cursor c, int flags, Uri uri) {
         super(context, c, flags);
         mUri = uri;
+    }
+
+    public void setOnNewsItemClicked(Callbacks.OnNewsItemClicked onNewsItemClicked) {
+        this.mOnNewsItemClicked = onNewsItemClicked;
     }
 
     @Override
@@ -50,6 +57,14 @@ public class NewsAdapter extends CursorAdapter {
         Picasso.with(context)
                 .load(image)
                 .into(viewHolder.iconView);
+        final RSSItem rssItem = new RSSItem(cursor.getInt(Constant.COL_ID), title, description, date, image, cursor.getString(Constant.COL_LINK));
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnNewsItemClicked == null) return;
+                mOnNewsItemClicked.onNewsItemClicked(rssItem);
+            }
+        });
     }
 
     private static class ViewHolder {

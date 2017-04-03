@@ -5,6 +5,7 @@ import android.database.Cursor;
 
 import com.example.maidaidien.rssmvp.Utils;
 import com.example.maidaidien.rssmvp.model.ModelHelper;
+import com.example.maidaidien.rssmvp.model.RSSItem;
 
 /**
  * Created by mai.dai.dien on 29/03/2017.
@@ -27,6 +28,11 @@ public class NewsPresenter implements Callbacks.Action {
             mModelHelper.start();
             mModelHelper.refresh();
         }
+    }
+
+    @Override
+    public void openNewsDetails(RSSItem newsItem) {
+        mNewsView.openNewsDetailsUi(newsItem);
     }
 
     @Override
