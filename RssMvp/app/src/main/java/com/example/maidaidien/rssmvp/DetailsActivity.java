@@ -34,6 +34,7 @@ public class DetailsActivity extends AppCompatActivity {
         }
 
         mWebView = (WebView) findViewById(R.id.webview);
+        mWebView.clearCache(true);
         mWebView.setWebViewClient(new Client());
         if (mRSSItem != null) {
             mWebView.loadUrl(mRSSItem.getLink());
