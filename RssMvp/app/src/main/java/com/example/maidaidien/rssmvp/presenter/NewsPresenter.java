@@ -43,7 +43,9 @@ public class NewsPresenter implements Callbacks.Action {
     @Override
     public void onLoadFinish(Cursor data) {
         mNewsView.onLoadFinish(data);
-        mNewsView.dismissLoading();
+        if (data.getCount() != 0) {
+            mNewsView.dismissLoading();
+        }
     }
 
     @Override
